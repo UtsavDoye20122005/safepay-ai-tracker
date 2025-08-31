@@ -145,7 +145,7 @@ Guidelines:
     <>
       {/* Chat Widget */}
       {isOpen && (
-        <div className="fixed bottom-20 left-4 z-50 animate-scale-in">
+        <div className="fixed bottom-20 right-4 z-50 animate-scale-in">
           <Card className="w-80 h-96 shadow-lg border">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
@@ -245,7 +245,7 @@ Guidelines:
       {/* Floating Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-4 left-4 z-40 h-12 w-12 rounded-full shadow-lg hover:scale-105 transition-all duration-200 ${
+        className={`fixed bottom-4 right-4 z-40 h-12 w-12 rounded-full shadow-lg hover:scale-105 transition-all duration-200 ${
           isOpen ? 'bg-muted-foreground hover:bg-muted-foreground' : ''
         }`}
         size="sm"
