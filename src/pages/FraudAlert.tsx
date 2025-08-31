@@ -10,7 +10,8 @@ import {
   CheckCircle, 
   Bot,
   User,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from "lucide-react";
 
 interface Message {
@@ -24,7 +25,7 @@ interface Message {
 const mockMessages: Message[] = [
   {
     id: 1,
-    text: "Hello! I'm your SafePay AI Fraud Alert Agent. I can help analyze your transactions for potential fraud. Share a transaction detail or ask me about suspicious activities.",
+    text: "Hello! I'm SafeFlow's Fraud Alert Agent. I can help analyze your transactions for potential fraud. Share a transaction detail or ask me about suspicious activities.",
     sender: 'bot',
     timestamp: new Date(Date.now() - 5 * 60 * 1000),
     type: 'info'
@@ -34,9 +35,10 @@ const mockMessages: Message[] = [
 const FraudAlert = () => {
   const [messages, setMessages] = useState<Message[]>(mockMessages);
   const [inputMessage, setInputMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
@@ -45,45 +47,90 @@ const FraudAlert = () => {
       timestamp: new Date(),
     };
 
-    // Simulate AI response
-    const botResponse: Message = {
-      id: messages.length + 2,
-      text: generateBotResponse(inputMessage),
-      sender: 'bot',
-      timestamp: new Date(Date.now() + 1000),
-      type: getBotResponseType(inputMessage)
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage("");
+    setIsLoading(true);
+
+    try {
+      const botResponseText = await callGeminiAPI(inputMessage);
+      const botResponse: Message = {
+        id: messages.length + 2,
+        text: botResponseText,
+        sender: 'bot',
+        timestamp: new Date(),
+        type: getBotResponseType(botResponseText)
+      };
+      setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      const errorResponse: Message = {
+        id: messages.length + 2,
+        text: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
+        sender: 'bot',
+        timestamp: new Date(),
+        type: 'warning'
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const callGeminiAPI = async (userInput: string): Promise<string> => {
+    const GEMINI_API_KEY = "AIzaSyBmLzYG7AY7RLizWgNW8Q_DXC02AjQZ7Jk";
+    const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+    
+    const systemPrompt = `You are SafeFlow's Fraud Alert Agent, an AI assistant specialized in UPI transaction fraud detection and financial security. 
+
+Your role:
+- Analyze UPI transactions for fraud patterns
+- Provide security advice for digital payments
+- Help users identify suspicious activities
+- Educate about fraud prevention
+
+Guidelines:
+- Be concise and helpful
+- Focus on UPI/digital payment security
+- Use ⚠️ for warnings, ✅ for safe practices, 💡 for tips
+- Keep responses under 150 words
+- Always prioritize user security`;
+
+    const requestBody = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `${systemPrompt}\n\nUser Query: ${userInput}`
+            }
+          ]
+        }
+      ]
     };
 
-    setMessages(prev => [...prev, userMessage, botResponse]);
-    setInputMessage("");
+    const response = await fetch(GEMINI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-goog-api-key': GEMINI_API_KEY,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm unable to respond right now. Please try again.";
   };
 
-  const generateBotResponse = (input: string) => {
-    const lowerInput = input.toLowerCase();
+  const getBotResponseType = (response: string): 'warning' | 'success' | 'info' => {
+    const lowerResponse = response.toLowerCase();
     
-    if (lowerInput.includes('transaction') || lowerInput.includes('payment')) {
-      return "I can help analyze that transaction. Based on the pattern, this appears to be a legitimate transaction to a verified merchant. The amount and timing are within normal parameters. Would you like me to check for any red flags?";
-    }
-    
-    if (lowerInput.includes('suspicious') || lowerInput.includes('fraud')) {
-      return "⚠️ Here are some red flags to watch for: 1) Unexpected large amounts, 2) Transactions to unknown merchants, 3) Multiple rapid transactions, 4) Requests for sensitive information. Always verify merchant details before making payments.";
-    }
-    
-    if (lowerInput.includes('safe') || lowerInput.includes('secure')) {
-      return "✅ Great question! To stay safe: Never share OTPs, verify merchant names, check transaction amounts carefully, and use official apps only. I'm here 24/7 to help verify suspicious activities.";
-    }
-
-    return "I can help you identify potential fraud in your UPI transactions. Share transaction details, ask about suspicious activities, or get security tips. What would you like to know?";
-  };
-
-  const getBotResponseType = (input: string): 'warning' | 'success' | 'info' => {
-    const lowerInput = input.toLowerCase();
-    
-    if (lowerInput.includes('suspicious') || lowerInput.includes('fraud')) {
+    if (lowerResponse.includes('⚠️') || lowerResponse.includes('warning') || lowerResponse.includes('suspicious') || lowerResponse.includes('fraud') || lowerResponse.includes('risk')) {
       return 'warning';
     }
     
-    if (lowerInput.includes('safe') || lowerInput.includes('secure')) {
+    if (lowerResponse.includes('✅') || lowerResponse.includes('safe') || lowerResponse.includes('secure') || lowerResponse.includes('legitimate')) {
       return 'success';
     }
     
@@ -198,9 +245,13 @@ const FraudAlert = () => {
                 />
                 <Button 
                   onClick={handleSendMessage}
-                  disabled={!inputMessage.trim()}
+                  disabled={!inputMessage.trim() || isLoading}
                 >
-                  <Send className="h-4 w-4" />
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </CardContent>
