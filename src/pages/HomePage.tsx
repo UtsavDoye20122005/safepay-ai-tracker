@@ -35,7 +35,7 @@ const HomePage = () => {
             <div className="relative animate-fade-in">
               <img 
                 src={heroImage} 
-                alt="SafePay AI - UPI Transaction Management"
+                alt="SafeFlow - UPI Transaction Management"
                 className="w-full rounded-2xl shadow-feature"
               />
             </div>
@@ -134,7 +134,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              How SafePay AI Works
+              How SafeFlow Works
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Simple, secure, and intelligent - protect your finances in three easy steps.

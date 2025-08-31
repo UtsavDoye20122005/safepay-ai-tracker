@@ -16,12 +16,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="relative">
-                <Shield className="h-8 w-8 text-primary group-hover:text-primary-glow transition-colors" />
-                <TrendingUp className="h-4 w-4 text-accent absolute -bottom-1 -right-1" />
-              </div>
-              <span className="text-xl font-bold text-foreground">SafePay AI</span>
+            <Link to="/" className="flex items-center space-x-3 group">
+              <img 
+                src="/lovable-uploads/30e0b643-4961-4092-a8ac-7c3d85dfe80d.png" 
+                alt="SafeFlow Logo" 
+                className="h-10 w-auto group-hover:scale-105 transition-transform"
+              />
+              <span className="text-xl font-bold text-foreground">SafeFlow</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -145,7 +146,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <footer className="border-t bg-card mt-20">
         <div className="container mx-auto px-4 sm:px-6 py-8">
           <div className="text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 SafePay AI. Made to keep your UPI transactions secure.</p>
+            <p>&copy; 2024 SafeFlow. Made to keep your UPI transactions secure.</p>
           </div>
         </div>
       </footer>
