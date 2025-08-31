@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Shield, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import ChatbotWidget from "./ChatbotWidget";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -150,6 +151,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </footer>
+
+      {/* Chatbot Widget */}
+      <ChatbotWidget />
     </div>
   );
 };
