@@ -8,44 +8,51 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 210 17% 16%;
+    /* Dark fintech theme */
+    --background: 220 23% 7%;
+    --foreground: 0 0% 94%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 17% 16%;
+    --card: 225 25% 9%;
+    --card-foreground: 0 0% 94%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 17% 16%;
+    --popover: 225 25% 9%;
+    --popover-foreground: 0 0% 94%;
 
-    /* Fintech blue primary */
-    --primary: 217 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 217 100% 65%;
+    /* Trust-building blue primary */
+    --primary: 213 94% 68%;
+    --primary-foreground: 225 25% 9%;
+    --primary-glow: 213 94% 78%;
 
-    /* Clean secondary */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 210 17% 16%;
+    /* Professional secondary */
+    --secondary: 225 25% 15%;
+    --secondary-foreground: 0 0% 94%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 225 25% 15%;
+    --muted-foreground: 240 5% 64%;
 
-    /* Success green accent */
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 142 69% 58%;
+    /* Money-safe green accent */
+    --accent: 142 76% 56%;
+    --accent-foreground: 225 25% 9%;
+    --accent-glow: 142 69% 66%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Alert colors - bright orange/red for warnings */
+    --destructive: 0 91% 71%;
+    --destructive-foreground: 225 25% 9%;
+    --warning: 25 95% 53%;
+    --warning-foreground: 225 25% 9%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 217 100% 50%;
+    --border: 240 19% 16%;
+    --input: 240 19% 16%;
+    --ring: 213 94% 68%;
 
-    /* Custom fintech design tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(217 100% 50% / 0.1), hsl(142 76% 36% / 0.1));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 98%));
-    --shadow-card: 0 4px 20px hsl(217 100% 50% / 0.08);
-    --shadow-feature: 0 8px 32px hsl(217 100% 50% / 0.12);
+    /* Enhanced fintech design tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(220 23% 7%), hsl(225 25% 12%));
+    --gradient-card: linear-gradient(145deg, hsl(225 25% 9%), hsl(225 25% 12%));
+    --gradient-primary: linear-gradient(135deg, hsl(213 94% 68%), hsl(213 94% 78%));
+    --gradient-accent: linear-gradient(135deg, hsl(142 76% 56%), hsl(142 69% 66%));
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.25);
+    --shadow-feature: 0 8px 32px hsl(213 94% 68% / 0.15);
+    --shadow-glow: 0 0 40px hsl(213 94% 68% / 0.2);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.5rem;
@@ -68,33 +75,36 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Enhanced dark mode for fintech */
+    --background: 220 23% 4%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 225 25% 6%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 225 25% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 213 94% 78%;
+    --primary-foreground: 225 25% 6%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 225 25% 12%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 225 25% 12%;
+    --muted-foreground: 240 5% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 142 69% 66%;
+    --accent-foreground: 225 25% 6%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 91% 81%;
+    --destructive-foreground: 225 25% 6%;
+    --warning: 25 95% 63%;
+    --warning-foreground: 225 25% 6%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 240 19% 12%;
+    --input: 240 19% 12%;
+    --ring: 213 94% 78%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -113,5 +123,10 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Enable dark mode by default for fintech theme */
+  html {
+    @apply dark;
   }
 }

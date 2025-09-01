@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Shield, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import ChatbotWidget from "./ChatbotWidget";
+import FloatingActions from "./FloatingActions";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -154,6 +155,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Chatbot Widget */}
       <ChatbotWidget />
+      <FloatingActions />
     </div>
   );
 };

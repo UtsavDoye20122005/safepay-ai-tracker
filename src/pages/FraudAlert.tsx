@@ -166,7 +166,7 @@ Guidelines:
               <p className="text-sm text-muted-foreground">Instant fraud pattern detection</p>
             </Card>
             <Card className="text-center p-4">
-              <AlertTriangle className="h-8 w-8 text-yellow-600 mx-auto mb-3" />
+              <AlertTriangle className="h-8 w-8 text-warning mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Risk Assessment</h3>
               <p className="text-sm text-muted-foreground">Advanced threat scoring</p>
             </Card>
@@ -214,9 +214,9 @@ Guidelines:
                           message.sender === 'user' 
                             ? 'bg-primary text-primary-foreground' 
                             : message.type === 'warning' 
-                              ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
+                              ? 'bg-warning/20 text-warning-foreground border border-warning/40'
                               : message.type === 'success'
-                                ? 'bg-green-50 text-green-800 border border-green-200'
+                                ? 'bg-accent/20 text-accent-foreground border border-accent/40'
                                 : 'bg-muted'
                         }`}>
                           <p className="text-sm">{message.text}</p>
