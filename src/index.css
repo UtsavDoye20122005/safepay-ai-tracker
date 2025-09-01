@@ -53,6 +53,7 @@ All colors MUST be HSL.
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.25);
     --shadow-feature: 0 8px 32px hsl(213 94% 68% / 0.15);
     --shadow-glow: 0 0 40px hsl(213 94% 68% / 0.2);
+    --shadow-glow-intense: 0 0 60px hsl(213 94% 68% / 0.6), 0 0 100px hsl(213 94% 68% / 0.3);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.5rem;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,10 @@ import {
   Bot,
   User,
   Loader2,
-  Minimize2
+  Minimize2,
+  Mic,
+  MicOff,
+  Volume2
 } from "lucide-react";
 
 interface Message {
@@ -34,6 +37,8 @@ const ChatbotWidget = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
 
   const callGeminiAPI = async (userInput: string): Promise<string> => {
     const GEMINI_API_KEY = "AIzaSyBmLzYG7AY7RLizWgNW8Q_DXC02AjQZ7Jk";
@@ -141,6 +146,55 @@ Guidelines:
     }
   };
 
+  // Speech Recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInputMessage(transcript);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  // Text to Speech
+  const speakText = (text: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      speechSynthesis.speak(utterance);
+    }
+  };
+
   return (
     <>
       {/* Chat Widget */}
@@ -185,16 +239,26 @@ Guidelines:
                         </div>
                         
                         {/* Message */}
-                        <div className={`px-3 py-2 rounded-lg text-xs ${
+                        <div className={`relative group px-3 py-2 rounded-lg text-xs ${
                           message.sender === 'user' 
                             ? 'bg-primary text-primary-foreground' 
                             : message.type === 'warning' 
-                              ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
+                              ? 'bg-warning/10 text-warning border border-warning/20'
                               : message.type === 'success'
-                                ? 'bg-green-50 text-green-800 border border-green-200'
+                                ? 'bg-success/10 text-success border border-success/20'
                                 : 'bg-muted'
                         }`}>
                           <p>{message.text}</p>
+                          {message.sender === 'bot' && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="absolute -right-2 -top-2 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => speakText(message.text)}
+                            >
+                              <Volume2 className="h-3 w-3" />
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -216,14 +280,32 @@ Guidelines:
 
               {/* Input */}
               <div className="flex gap-2">
-                <Input
-                  placeholder="Ask me anything..."
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="text-xs h-8"
-                  disabled={isLoading}
-                />
+                <div className="relative flex-1">
+                  <Input
+                    placeholder={isListening ? "Listening..." : "Ask me anything..."}
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="text-xs h-8 pr-8"
+                    disabled={isLoading || isListening}
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className={`absolute right-1 top-1 h-6 w-6 p-0 ${
+                      isListening ? 'text-red-500 animate-pulse' : 'text-muted-foreground'
+                    }`}
+                    onClick={isListening ? stopListening : startListening}
+                    disabled={isLoading}
+                  >
+                    {isListening ? (
+                      <MicOff className="h-3 w-3" />
+                    ) : (
+                      <Mic className="h-3 w-3" />
+                    )}
+                  </Button>
+                </div>
                 <Button 
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isLoading}
@@ -242,18 +324,21 @@ Guidelines:
         </div>
       )}
 
-      {/* Floating Button */}
+      {/* Floating Button with Glow Effect */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-4 right-4 z-40 h-12 w-12 rounded-full shadow-lg hover:scale-105 transition-all duration-200 ${
-          isOpen ? 'bg-muted-foreground hover:bg-muted-foreground' : ''
+        className={`fixed bottom-4 right-4 z-40 h-12 w-12 rounded-full shadow-glow 
+          bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300 
+          before:absolute before:inset-0 before:rounded-full before:bg-primary/20 
+          before:blur-lg before:animate-pulse before:-z-10 ${
+          isOpen ? 'shadow-glow-intense' : 'shadow-glow'
         }`}
         size="sm"
       >
         {isOpen ? (
-          <X className="h-5 w-5" />
+          <X className="h-5 w-5 text-primary-foreground" />
         ) : (
-          <MessageCircle className="h-5 w-5" />
+          <MessageCircle className="h-5 w-5 text-primary-foreground animate-pulse" />
         )}
       </Button>
     </>

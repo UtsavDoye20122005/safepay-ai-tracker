@@ -48,14 +48,14 @@ const HomePage = () => {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Two Powerful Features
+              Your Complete Transaction Solution
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to manage and secure your UPI transactions in one place.
+              Everything you need to categorize transactions and stay secure in one place.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-1 max-w-2xl mx-auto gap-8">
             {/* Transaction Categorizer */}
             <Card className="group hover:shadow-feature transition-all duration-300 bg-gradient-card border-0">
               <CardHeader className="pb-6">
@@ -91,40 +91,6 @@ const HomePage = () => {
               </CardContent>
             </Card>
 
-            {/* Fraud Alert Agent */}
-            <Card className="group hover:shadow-feature transition-all duration-300 bg-gradient-card border-0">
-              <CardHeader className="pb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                  <Shield className="h-6 w-6 text-accent" />
-                </div>
-                <CardTitle className="text-2xl">Fraud Alert Agent</CardTitle>
-                <CardDescription className="text-base">
-                  AI-powered assistant that analyzes patterns and warns about suspicious transactions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 text-sm text-muted-foreground mb-6">
-                  <li className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
-                    Real-time transaction pattern analysis
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
-                    Intelligent fraud detection algorithms
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
-                    Instant alerts for suspicious activities
-                  </li>
-                </ul>
-                <Button asChild variant="outline" className="w-full group border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                  <Link to="/fraud-alert">
-                    Chat with Agent
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>
