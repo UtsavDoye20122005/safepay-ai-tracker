@@ -109,8 +109,7 @@ const FloatingActions = () => {
                     size="lg"
                     className={`
                       h-14 w-14 rounded-full shadow-lg transition-all duration-300 
-                      bg-muted/20 text-muted-foreground/60 border border-muted/30
-                      hover:bg-muted/40 hover:text-muted-foreground/80
+                      ${action.color} ${action.hoverColor}
                       hover:scale-110 group relative
                       animate-fade-in
                     `}
@@ -171,11 +170,10 @@ const FloatingActions = () => {
                 onClick={() => setActiveCard(activeCard === action.id ? null : action.id)}
                 className={`
                   h-14 w-14 rounded-full shadow-lg transition-all duration-300 
-                  bg-muted/20 text-muted-foreground/60 border border-muted/30
-                  hover:bg-muted/40 hover:text-muted-foreground/80
+                  ${action.color} ${action.hoverColor}
                   hover:scale-110 group relative
                   animate-fade-in
-                  ${activeCard === action.id ? 'scale-110 bg-muted/40 text-muted-foreground/80' : ''}
+                  ${activeCard === action.id ? 'scale-110 shadow-glow' : ''}
                 `}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
